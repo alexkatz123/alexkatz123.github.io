@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Hello</title>
+        <style>
+            body {
+                background: linear-gradient(45deg, #4CAF50, #1E90FF); /* Diagonal gradient from green to blue */
+                background-repeat: no-repeat;
+                background-size: 100% 100%;
+                text-align: center;
+                color: #fff; /* Set text color to white for better contrast */
+            }
+
+            #search-box {
+                background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background for the search box */
+                display: inline-block;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            }
+
+            #searchQuery {
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                margin-right: 10px;
+            }
+
+            #searchButton {
+                padding: 10px 20px;
+                background-color: #007bff;
+                color: #fff;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+
+            #searchButton:hover {
+                background-color: #0056b3;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Hello</h1>
+        <div id="search-box">
+            <input type="text" id="searchQuery" placeholder="Enter a search" />
+            <button id="searchButton" onclick="searchYouTube()">Search</button>
+        </div>
+        <div id="searchResults"></div>
+
+        <script src="script.js"></script>
+    </body>
+</html>
