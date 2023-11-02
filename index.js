@@ -13,6 +13,8 @@ document
             window.location.href = "choose.html";
         } else if (username === "Tully" && password === "Tully123") {
             window.location.href = "choose.html";
+        } else if (username === "Avmo" && password === "Avmo123") {
+            window.location.href = "choose.html";
         } else {
             window.location.href = "https://amazon.co.uk";        }
     });
