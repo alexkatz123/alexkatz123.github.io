@@ -2,90 +2,42 @@
 <html>
     <head>
         <title>Login Page</title>
-        <style>
-            body {
-                background: linear-gradient(to bottom, #89c6ff, #e74c3c);
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                height: 100vh;
-                margin: 0;
-            }
-        </style>
+        <link rel="stylesheet" type="text/css" href="styles.css" />
     </head>
     <body>
-        <h1>Login</h1>
-        <form id="login-form">
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" /><br />
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" /><br />
-            <button type="submit">Login</button>
-        </form>
+        <div id="content-wrapper">
+            <h1>Login</h1>
+            <form id="login-form">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" /><br />
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" /><br />
+                <button type="submit">Login</button>
+            </form>
+        </div>
 
-        <script>
-            document
-                .getElementById("login-form")
-                .addEventListener("submit", function (event) {
-                    event.preventDefault();
-                    const username = document.getElementById("username").value;
-                    const password = document.getElementById("password").value;
+        <div class="cookie-consent" id="cookie-consent">
+            <p>
+                Select Your Cookie Preferences. We use cookies and similar tools
+                that are necessary to enable you to make purchases, to enhance
+                your experiences and to provide our services, as detailed in our
+                Cookie Notice. We also use these cookies to understand how
+                customers use our services (for example, by measuring site
+                visits) so we can make improvements. If you agree, we’ll also
+                use cookies to complement your shopping experience across the
+                alexkatz websites as described in our Cookie Notice. This
+                includes using first- and third-party cookies, which store or
+                access standard device information such as a unique identifier.
+                Third parties use cookies for their purposes of displaying and
+                measuring personalized ads, generating audience insights, and
+                developing and improving products.
+            </p>
+            <div class="cookie-buttons">
+                <button id="accept-cookies">Accept All</button>
+                <button id="decline-cookies">Decline All</button>
+            </div>
+        </div>
 
-                    if (username === "Alex" && password === "Alex123") {
-                        window.location.href = "index1.html";
-                    } else if (username === "User" && password === "User123") {
-                        window.location.href = "watch.html";
-                    } else if (username === "Avi" && password === "Avi123") {
-                        window.location.href = "watch.html";
-                    } else if (
-                        username === "Tully" &&
-                        password === "Tully123"
-                    ) {
-                        window.location.href = "index1.html";
-                    } else if (
-                        username === "Tully" &&
-                        password === "Tully123"
-                    ) {
-                        window.location.href = "watch.html";
-                    } else if (
-                        username === "Tully" &&
-                        password === "Tully123"
-                    ) {
-                        window.location.href = "watch.html";
-                    } else if (
-                        username === "Tully" &&
-                        password === "Tully123"
-                    ) {
-                        window.location.href = "watch.html";
-                    } else if (
-                        username === "Tully" &&
-                        password === "Tully123"
-                    ) {
-                        window.location.href = "watch.html";
-                    } else if (
-                        username === "Tully" &&
-                        password === "Tully123"
-                    ) {
-                        window.location.href = "watch.html";
-                    } else if (
-                        username === "Tully" &&
-                        password === "Tully123"
-                    ) {
-                        window.location.href = "watch.html";
-                    } else if (
-                        username === "Tully" &&
-                        password === "Tully123"
-                    ) {
-                        window.location.href = "watch.html";
-                    } else if (
-                        username === "Tully" &&
-                        password === "Tully123"
-                    ) {
-                        window.location.href = "watch.html";
-                    } else {
-                        window.location.href = "https://www.amazon.co.uk/";
-                    }
-                });
-        </script>
+        <script src="login.js"></script>
     </body>
 </html>
