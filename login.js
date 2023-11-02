@@ -6,16 +6,15 @@ document
         const password = document.getElementById("password").value;
 
         if (username === "Alex" && password === "Alex123") {
-            window.location.href = "index1.html";
+            window.location.href = "choose.html";
         } else if (username === "User" && password === "User123") {
             window.location.href = "watch.html";
         } else if (username === "Avi" && password === "Avi123") {
-            window.location.href = "index1.html";
+            window.location.href = "choose.html";
         } else if (username === "Tully" && password === "Tully123") {
-            window.location.href = "index1.html";
+            window.location.href = "choose.html";
         } else {
-            // Handle invalid login here, e.g., show an error message.
-            window.location.href = "amazon.co.uk";        }
+            window.location.href = "https://amazon.co.uk";        }
     });
 
 const acceptCookiesButton = document.getElementById("accept-cookies");
@@ -25,15 +24,14 @@ const overlay = document.createElement("div");
 overlay.classList.add("overlay");
 
 acceptCookiesButton.addEventListener("click", function () {
-    cookieConsent.style.display = "none"; // Hide the bar when cookies are accepted
-    overlay.style.display = "none"; // Hide the overlay
+    cookieConsent.style.display = "none"; 
+    overlay.style.display = "none"; 
 });
 
 declineCookiesButton.addEventListener("click", function () {
-    cookieConsent.style.display = "none"; // Hide the bar when cookies are declined
-    overlay.style.display = "none"; // Hide the overlay
+    cookieConsent.style.display = "none";
+    overlay.style.display = "none"; 
 });
 
-// Display the overlay until the user accepts or declines cookies
 overlay.style.display = "block";
 document.getElementById("content-wrapper").appendChild(overlay);

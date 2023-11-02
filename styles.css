@@ -7,7 +7,7 @@ body {
     min-height: 100vh;
     margin: 0;
     font-family: Arial, sans-serif;
-    position: relative; /* Added */
+    position: relative;
 }
 
 #content-wrapper {
@@ -35,7 +35,7 @@ input[type="password"] {
     font-size: 16px;
 }
 
-button[type="submit"] {
+button {
     background: #007BFF;
     color: #fff;
     border: none;
@@ -65,7 +65,13 @@ button[type="submit"] {
 }
 
 #cookie-consent p {
-    font-size: 14px;
+    font-size: 20px;
+    margin-left: 30px;
+    margin-right: 40px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+
+
 }
 
 .overlay {
