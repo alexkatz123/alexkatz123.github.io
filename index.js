@@ -15,7 +15,9 @@ document
             window.location.href = "ad.html";
         } else if (username === "Avmo" && password === "Avmo123") {
             window.location.href = "choose.html";
-        } else {
+        } else if (username === "AY" && password === "AY123") {
+            window.location.href = "watch.html";
+        }else {
             window.location.href = "https://amazon.co.uk";        }
     });
 
