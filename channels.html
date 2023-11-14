@@ -117,9 +117,7 @@
             <button id="searchButton" onclick="searchYouTubeChannels()">
                 Search
             </button>
-            <button id="downloadButton" onclick="downloadSearches()">
-                Download Searches
-            </button>
+
             <button
                 id="searchAgainButton"
                 id="goToChannelsButton"
@@ -268,6 +266,15 @@
             function goToChannels() {
                 // Redirect to the channels.html page
                 window.location.href = "search.html";
+            }
+
+            function handleKeyPress(event) {
+                if (event.key === "Enter") {
+                    event.preventDefault(); // Prevent the default behavior of the Enter key
+                    searchYouTubeChannels();
+                } else if (event.key === "ControlRight") {
+                    searchAgain();
+                }
             }
         </script>
 
