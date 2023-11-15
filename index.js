@@ -18,7 +18,7 @@ document
         } else if (username === "AY" && password === "AY123") {
             window.location.href = "watch.html";
         }else {
-            window.location.href = "https://amazon.co.uk";        }
+            window.location.href = "dont-touch.html";        }
     });
 
 const acceptCookiesButton = document.getElementById("accept-cookies");
