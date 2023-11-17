@@ -12,7 +12,7 @@ document
         } else if (username === "Avi" && password === "Avi123") {
             window.location.href = "choose.html";
         } else if (username === "Tully" && password === "Tully123") {
-            window.location.href = "ad.html";
+            window.location.href = "choose.html";
         } else if (username === "Avmo" && password === "Avmo123") {
             window.location.href = "choose.html";
         } else if (username === "AY" && password === "AY123") {
