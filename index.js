@@ -16,7 +16,7 @@ document
         } else if (username === "Avmo" && password === "Avmo123") {
             window.location.href = "choose.html";
         } else if (username === "AY" && password === "AY123") {
-            window.location.href = "watch.html";
+            window.location.href = "choose.html";
         }else {
             window.location.href = "dont-touch.html";        }
     });
