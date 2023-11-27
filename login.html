@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<head>
+
+</head>
+<body>
+<form>
+<fieldset>
+<legend>Login</legend>
+<input name="email" type="email" id="email" placeholder="Email address" required /><br>
+<input name="password" type="password" id="password" placeholder="Password" required /><br>
+<input type="submit" value="Login" />
+</fieldset>
+</form>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/appwrite@13.0.0"></script>
+<script>
+const { Client, Account } = Appwrite;
+
+const client = new Client();
+
+client
+    .setEndpoint('https://api.fnukapps.com/v1')
+    .setProject('6565214d1d18c91cfaf2');
+
+const auth = new Account(client);
+
+document.getElementsByTagName("form")[0].addEventListener("submit", (e) => {
+	e.preventDefault();
+	
+	auth.createEmailSession(document.getElementById("email").value, document.getElementById("password")).then(r => {
+		alert("login successful");
+	}).catch(e => {
+		alert(e.message);
+	});
+});
+</script>
+</html>
