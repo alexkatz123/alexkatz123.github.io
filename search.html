@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Hello</title>
+        <style>
+            body {
+                background: linear-gradient(45deg, #4caf50, #1e90ff);
+                background-repeat: repeat;
+                background-size: 100% 600%;
+                text-align: center;
+                color: #fff;
+            }
+
+            #search-box {
+                background-color: rgba(255, 255, 255, 0.8);
+                display: inline-block;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            }
+
+            #searchQuery {
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                margin-right: 10px;
+            }
+
+            #searchButton,
+            #searchAgainButton,
+            #downloadButton {
+                padding: 10px 20px;
+                background-color: #007bff;
+                color: #fff;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+
+            #searchButton:hover,
+            #searchAgainButton:hover,
+            #downloadButton:hover {
+                background-color: #0056b3;
+            }
+        </style>
+    </head>
+
+    <body>
+        <h1>Hello</h1>
+        <div id="search-box">
+            <button id="searchAgainButton" onclick="searchAgain()">
+                Search Again
+            </button>
+            <input
+                type="text"
+                id="searchQuery"
+                placeholder="Enter a search"
+                onkeydown="handleKeyPress(event)" />
+            <button id="searchButton" onclick="searchYouTube()">Search</button>
+
+            <button
+                id="searchAgainButton"
+                id="goToChannelsButton"
+                onclick="goToChannels()">
+                Go to Channels
+            </button>
+        </div>
+        <div id="searchResults"></div>
+
+        <script>
+            // Replace with your own YouTube Data API key
+            const API_KEY = "AIzaSyAKiHjfMES9KP8QdfzhJ9KzIQbflW2VVm4";
+
+            // Array to store search history
+            const searchHistory = [];
+
+            async function searchYouTube() {
+                try {
+                    const query = document.getElementById("searchQuery").value;
+                    const searchResults =
+                        document.getElementById("searchResults");
+                    searchResults.innerHTML = "";
+
+                    // Set the number of results you want to display (25 in this example)
+                    const maxResults = 20;
+
+                    const response = await fetch(
+                        `https://www.googleapis.com/youtube/v3/search?key=${API_KEY}&part=snippet&q=${query}&maxResults=${maxResults}`,
+                        {
+                            method: "GET",
+                        }
+                    );
+
+                    const data = await response.json();
+                    let videos = data.items;
+
+                    // Sort videos by date in descending order
+                    videos.sort(
+                        (a, b) =>
+                            new Date(b.snippet.publishedAt) -
+                            new Date(a.snippet.publishedAt)
+                    );
+
+                    videos.forEach((video) => {
+                        const videoTitle = video.snippet.title;
+                        const videoId = video.id.videoId;
+                        const publishedAt = new Date(
+                            video.snippet.publishedAt
+                        ).toLocaleDateString();
+
+                        const videoContainer = document.createElement("div");
+                        videoContainer.innerHTML = `<h2>${videoTitle}</h2><p>Published on ${publishedAt}</p><iframe width="560" height="315" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>`;
+
+                        searchResults.appendChild(videoContainer);
+                    });
+
+                    // Add the search to the history
+                    const searchEntry = {
+                        query,
+                        timestamp: new Date().toLocaleString(),
+                    };
+                    searchHistory.push(searchEntry);
+                } catch (error) {
+                    console.error(error);
+                }
+            }
+
+            function searchAgain() {
+                document.getElementById("searchQuery").value = "";
+                document.getElementById("searchResults").innerHTML = "";
+            }
+
+            function handleKeyPress(event) {
+                if (event.key === "Enter") {
+                    searchYouTube();
+                } else if (event.key === "ControlRight") {
+                    searchAgain();
+                }
+            }
+
+            function downloadSearches() {
+                const csvContent = "data:text/csv;charset=utf-8,";
+                const header = "Search Query,Date and Time\n";
+
+                // Combine search history into CSV format
+                const csvData = searchHistory
+                    .map((entry) => `${entry.query},${entry.timestamp}`)
+                    .join("\n");
+
+                const csvBlob = new Blob([header, csvData], {
+                    type: "text/csv",
+                });
+                const csvURL = URL.createObjectURL(csvBlob);
+
+                const downloadLink = document.createElement("a");
+                downloadLink.href = csvURL;
+                downloadLink.download = "searches.csv";
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+                document.body.removeChild(downloadLink);
+            }
+            function goToChannels() {
+                // Redirect to the channels.html page
+                window.location.href = "channels.html";
+            }
+        </script>
+
+        <script src="https://www.youtube.com/iframe_api"></script>
+    </body>
+</html>

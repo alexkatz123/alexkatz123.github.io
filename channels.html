@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Channel Search</title>
+        <style>
+            body {
+                background: linear-gradient(45deg, #4caf50, #1e90ff);
+                background-repeat: repeat;
+                background-size: 100% 550%;
+                text-align: center;
+                color: #fff;
+            }
+
+            #search-box {
+                background-color: rgba(255, 255, 255, 0.8);
+                display: inline-block;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            }
+
+            #searchQuery {
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                margin-right: 10px;
+            }
+
+            #searchButton,
+            #searchAgainButton,
+            #downloadButton {
+                padding: 10px 20px;
+                background-color: #007bff;
+                color: #fff;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+
+            #searchButton:hover,
+            #searchAgainButton:hover,
+            #downloadButton:hover {
+                background-color: #0056b3;
+            }
+
+            #searchResults {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .channelCard {
+                margin: 10px;
+                padding: 15px;
+                background-color: rgba(255, 255, 255, 0.8);
+                border-radius: 10px;
+                box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+                cursor: pointer;
+            }
+
+            .channelCard img {
+                max-width: 100%;
+                border-radius: 5px;
+                margin-bottom: 10px;
+            }
+
+            #videosContainer {
+                margin-top: 20px;
+                text-align: left;
+            }
+
+            .videoCard {
+                margin: 10px;
+                padding: 15px;
+                background-color: rgba(255, 255, 255, 0.8);
+                border-radius: 10px;
+                box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            }
+
+            .videoCard h2,
+            .videoCard p {
+                color: #000;
+            }
+
+            .videoCard img {
+                max-width: 100%;
+                border-radius: 5px;
+                margin-bottom: 10px;
+            }
+
+            #embeddedVideos {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .embeddedVideo {
+                width: 560px;
+                height: 315px;
+                margin: 20px;
+            }
+        </style>
+    </head>
+
+    <body>
+        <h1>Channel Search</h1>
+        <div id="search-box">
+            <button id="searchAgainButton" onclick="searchAgain()">
+                Search Again
+            </button>
+            <input
+                type="text"
+                id="searchQuery"
+                placeholder="Enter a channel name"
+                onkeydown="handleKeyPress(event)"
+            />
+            <button id="searchButton" onclick="searchYouTubeChannels()">
+                Search
+            </button>
+
+            <button
+                id="searchAgainButton"
+                id="goToChannelsButton"
+                onclick="goToChannels()"
+            >
+                Go to search
+            </button>
+        </div>
+        <div id="searchResults"></div>
+        <div id="videosContainer"></div>
+        <div id="embeddedVideos"></div>
+
+        <script>
+            // Replace with your own YouTube Data API key
+            const API_KEY = "AIzaSyAKiHjfMES9KP8QdfzhJ9KzIQbflW2VVm4";
+
+            // Array to store search history
+            const searchHistory = [];
+
+            async function searchYouTubeChannels() {
+                try {
+                    const query = document.getElementById("searchQuery").value;
+                    const searchResults =
+                        document.getElementById("searchResults");
+                    searchResults.innerHTML = "";
+                    const videosContainer =
+                        document.getElementById("videosContainer");
+                    videosContainer.innerHTML = "";
+                    const embeddedVideosContainer =
+                        document.getElementById("embeddedVideos");
+                    embeddedVideosContainer.innerHTML = "";
+
+                    const maxResults = 25;
+
+                    const response = await fetch(
+                        `https://www.googleapis.com/youtube/v3/search?key=${API_KEY}&part=snippet&type=channel&q=${query}&maxResults=${maxResults}`,
+                        {
+                            method: "GET",
+                        }
+                    );
+
+                    const data = await response.json();
+                    let channels = data.items;
+
+                    channels.forEach((channel) => {
+                        const channelId = channel.id.channelId;
+                        const channelTitle = channel.snippet.title;
+                        const channelThumbnail =
+                            channel.snippet.thumbnails.medium.url;
+
+                        const channelCard = document.createElement("div");
+                        channelCard.className = "channelCard";
+                        channelCard.innerHTML = `<img src="${channelThumbnail}" alt="${channelTitle}"><h2>${channelTitle}</h2><p>Channel ID: ${channelId}</p>`;
+                        channelCard.addEventListener("click", () =>
+                            showChannelVideos(channelId)
+                        );
+
+                        searchResults.appendChild(channelCard);
+                    });
+
+                    // Add the search to the history
+                    const searchEntry = {
+                        query,
+                        timestamp: new Date().toLocaleString(),
+                    };
+                    searchHistory.push(searchEntry);
+                } catch (error) {
+                    console.error(error);
+                }
+            }
+
+            async function showChannelVideos(channelId) {
+                try {
+                    const response = await fetch(
+                        `https://www.googleapis.com/youtube/v3/search?key=${API_KEY}&part=snippet&channelId=${channelId}&order=date&type=video&maxResults=50`,
+                        {
+                            method: "GET",
+                        }
+                    );
+
+                    const data = await response.json();
+                    let videos = data.items;
+
+                    // Clear the entire page
+                    document.getElementById("searchResults").innerHTML = "";
+                    document.getElementById("videosContainer").innerHTML = "";
+                    document.getElementById("embeddedVideos").innerHTML = "";
+
+                    videos.forEach((video) => {
+                        const videoTitle = video.snippet.title;
+                        const videoId = video.id.videoId;
+                        const videoDate = new Date(
+                            video.snippet.publishedAt
+                        ).toLocaleDateString();
+
+                        const videoCard = document.createElement("div");
+                        videoCard.className = "videoCard";
+                        videoCard.innerHTML = `<h2>${videoTitle}</h2><p>Published on: ${videoDate}</p><iframe width="560" height="315" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>`;
+
+                        document
+                            .getElementById("videosContainer")
+                            .appendChild(videoCard);
+                    });
+                } catch (error) {
+                    console.error(error);
+                }
+            }
+
+            function searchAgain() {
+                // Clear the entire page
+                document.getElementById("searchQuery").value = "";
+                document.getElementById("searchResults").innerHTML = "";
+                document.getElementById("videosContainer").innerHTML = "";
+                document.getElementById("embeddedVideos").innerHTML = "";
+            }
+
+            function handleKeyPress(event) {
+                if (event.key === "Enter") {
+                    searchYouTubeChannels();
+                } else if (event.key === "ControlRight") {
+                    searchAgain();
+                }
+            }
+
+            function downloadSearches() {
+                const csvContent = "data:text/csv;charset=utf-8,";
+                const header = "Search Query,Date and Time\n";
+
+                const csvData = searchHistory
+                    .map((entry) => `${entry.query},${entry.timestamp}`)
+                    .join("\n");
+
+                const csvBlob = new Blob([header, csvData], {
+                    type: "text/csv",
+                });
+                const csvURL = URL.createObjectURL(csvBlob);
+
+                const downloadLink = document.createElement("a");
+                downloadLink.href = csvURL;
+                downloadLink.download = "searches.csv";
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+                document.body.removeChild(downloadLink);
+            }
+
+            function goToChannels() {
+                // Redirect to the channels.html page
+                window.location.href = "search.html";
+            }
+
+            function handleKeyPress(event) {
+                if (event.key === "Enter") {
+                    event.preventDefault(); // Prevent the default behavior of the Enter key
+                    searchYouTubeChannels();
+                } else if (event.key === "ControlRight") {
+                    searchAgain();
+                }
+            }
+        </script>
+
+        <script src="https://www.youtube.com/iframe_api"></script>
+    </body>
+</html>
